@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 
 typedef struct {
   std::string name;
@@ -12,5 +13,5 @@ private:
 
 public:
   Lexer();
-  void tokenize(std::string code);
+  std::vector<Token> tokenize(std::string code);
 };

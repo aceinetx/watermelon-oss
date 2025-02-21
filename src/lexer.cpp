@@ -3,7 +3,7 @@
 #include <regex>
 
 Lexer::Lexer() = default;
-void Lexer::tokenize(std::string code) {
+std::vector<Token> Lexer::tokenize(std::string code) {
   this->code = code;
   this->code = replaceall(this->code, ";", " ;");
   this->code = replaceall(this->code, "X[E0", ";");
@@ -25,91 +25,93 @@ void Lexer::tokenize(std::string code) {
     }
 
     if (word == "println" || word == "print") {
-      tokens.append({"KOut", word});
+      tokens.push_back({"KOut", word});
     } else if (word == "scanln") {
-      tokens.append({"KInput", word});
+      tokens.push_back({"KInput", word});
     } else if (word == "var") {
-      tokens.append({"KVal", word});
+      tokens.push_back({"KVal", word});
     } else if (word == "return") {
-      tokens.append({"KReturn", word});
+      tokens.push_back({"KReturn", word});
     } else if (word == "free") {
-      tokens.append({"KFree", word});
+      tokens.push_back({"KFree", word});
     } else if (word == "fn") {
-      tokens.append({"KFn", word});
+      tokens.push_back({"KFn", word});
     } else if (word == "len") {
-      tokens.append({"KLen", word});
+      tokens.push_back({"KLen", word});
     } else if (word == "getchar") {
-      tokens.append({"KGetChar", word});
+      tokens.push_back({"KGetChar", word});
     } else if (word == "setchar") {
-      tokens.append({"KSetChar", word});
+      tokens.push_back({"KSetChar", word});
     } else if (word == "nf") {
-      tokens.append({"KIndentEnd", word});
+      tokens.push_back({"KIndentEnd", word});
     } else if (word == "call") {
-      tokens.append({"KFnCall", word});
+      tokens.push_back({"KFnCall", word});
     } else if (word == "namespace") {
-      tokens.append({"KNamespace", word});
+      tokens.push_back({"KNamespace", word});
     } else if (word == "nsEnd") {
-      tokens.append({"KNamespaceEnd", word});
+      tokens.push_back({"KNamespaceEnd", word});
     } else if (word == "exit") {
-      tokens.append({"KExit", word});
+      tokens.push_back({"KExit", word});
     } else if (word == "loop") {
-      tokens.append({"KLoop", word});
+      tokens.push_back({"KLoop", word});
     } else if (word == "break") {
-      tokens.append({"KBreak", word});
+      tokens.push_back({"KBreak", word});
     } else if (word == "lend") {
-      tokens.append({"KEndLoop", word});
+      tokens.push_back({"KEndLoop", word});
     } else if (word == "sleep") {
-      tokens.append({"KSleep", word});
+      tokens.push_back({"KSleep", word});
     } else if (word == "utime") {
-      tokens.append({"KUTime", word});
+      tokens.push_back({"KUTime", word});
     } else if (word == "cp") {
-      tokens.append({"KCopy", word});
+      tokens.push_back({"KCopy", word});
     } else if (word == "?") {
-      tokens.append({"KComment", word});
+      tokens.push_back({"KComment", word});
     } else if (word == "-?") {
-      tokens.append({"KCommentEnd", word});
+      tokens.push_back({"KCommentEnd", word});
     } else if (word == "none") {
-      tokens.append({"KNone", word});
+      tokens.push_back({"KNone", word});
     } else if (word == "true" || word == "false") {
-      tokens.append({"KBool", word});
+      tokens.push_back({"KBool", word});
     } else if (word[0] == '"' && word.back() == '"') {
       std::string temp = word;
       temp.pop_back();
       temp.erase(temp.begin());
-      tokens.append({"TStr", temp});
+      tokens.push_back({"TStr", temp});
     } else if (word == "if") {
-      tokens.append({"STif", word});
+      tokens.push_back({"STif", word});
     } else if (word == "else") {
-      tokens.append({"STelse", word});
+      tokens.push_back({"STelse", word});
     } else if (word == "end") {
-      tokens.append({"STend", word});
-    } else if (std::regex_match("[a-z]", word) ||
-               std::regex_match("[A-Z]", word)) {
-      tokens.append({"Identifier", word});
+      tokens.push_back({"STend", word});
+    } else if (std::regex_match(word, std::regex("[a-z]")) ||
+               std::regex_match(word, std::regex("[A-Z]"))) {
+      tokens.push_back({"Identifier", word});
     } else if (word == ";") {
-      tokens.append({"End", word});
-    } else if (std::regex_match("[+\-=*/]", word)) {
-      tokens.append({"Op", word});
+      tokens.push_back({"End", word});
+    } else if (std::regex_match(word, std::regex("[+\\-=*/]"))) {
+      tokens.push_back({"Op", word});
     } else if (word == "==") {
-      tokens.append({"Eq", word});
+      tokens.push_back({"Eq", word});
     } else if (word == "!=") {
-      tokens.append({"NEq", word});
+      tokens.push_back({"NEq", word});
     } else if (word == ">") {
-      tokens.append({"More", word});
+      tokens.push_back({"More", word});
     } else if (word == "<") {
-      tokens.append({"Less", word});
+      tokens.push_back({"Less", word});
     } else if (word == ">=") {
-      tokens.append({"MoreEq", word});
+      tokens.push_back({"MoreEq", word});
     } else if (word == "<=") {
-      tokens.append({"LessEq", word});
+      tokens.push_back({"LessEq", word});
     } else {
-      if (std::regex_match("[+-]?([0-9]*[.])?[0-9]+", word)) {
-        tokens.append({"TFloat", word});
-      } else if (std::regex_match("[0-9]", word)) {
-        tokens.append({"TInt", word});
+      if (std::regex_match(word, std::regex("[+-]?([0-9]*[.])?[0-9]+"))) {
+        tokens.push_back({"TFloat", word});
+      } else if (std::regex_match(word, std::regex("[0-9]"))) {
+        tokens.push_back({"TInt", word});
       } else {
-        tokens.append({"Indentifier", word});
+        tokens.push_back({"Indentifier", word});
       }
     }
   }
+
+	return tokens;
 }
