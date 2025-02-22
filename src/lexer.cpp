@@ -113,5 +113,5 @@ std::vector<Token> Lexer::tokenize(std::string code) {
     }
   }
 
-	return tokens;
+  return tokens;
 }

@@ -1,12 +1,17 @@
 #pragma once
-#include <string>
 #include <map>
+#include <string>
 
-typedef struct {
-	double value_d;
-	std::string value_s;
+typedef struct Variable {
+  union {
+    double d;
+    std::string *s;
+  };
+  bool isString();
+  Variable(double d = 0, std::string s = "");
+  ~Variable();
 } Variable;
 
 typedef struct {
-	std::map<std::string, Variable> variables;
+  std::map<std::string, Variable> variables;
 } Scope;

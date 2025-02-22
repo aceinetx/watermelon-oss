@@ -1,15 +1,30 @@
 #pragma once
 #include "lexer.h"
-#include <vector>
 #include "scope.h"
 #include <map>
+#include <string>
+#include <vector>
+
+typedef enum { Eq, NEq, More, Less, MoreEq, LessEq } IfStCond;
+
+typedef struct IfSt {
+  std::string var;
+  std::string equal;
+  bool active;
+  bool elsecon;
+  IfStCond condition;
+} IfSt;
 
 class Parser {
-	private:
-std::vector<Token> tokens;
-	public:
-		std::map<std::string, Scope> scopes;
-		std::string current_scope;
-		Parser();
-		void run(std::vector<Token> tokens);
+private:
+  std::vector<Token> tokens;
+  std::vector<IfSt> ifst;
+  bool toexit;
+
+public:
+  std::map<std::string, Scope> scopes;
+  std::string current_scope;
+  Parser();
+  ~Parser();
+  void run(std::vector<Token> tokens);
 };
