@@ -3,15 +3,15 @@
 #include <vector>
 
 typedef struct {
-  std::string name;
-  std::string value;
+	std::string name;
+	std::string value;
 } Token;
 
 class Lexer {
 private:
-  std::string code;
+	std::string code;
 
 public:
-  Lexer();
-  std::vector<Token> tokenize(std::string code);
+	Lexer();
+	std::vector<Token> tokenize(std::string code);
 };
