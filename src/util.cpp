@@ -15,26 +15,26 @@ std::vector<std::string> shlex(std::string s) {
 
     if (c == '"' || c == '\'') {
       if (in_quotes && c == quote_char) {
-        // Closing the quote
-        in_quotes = false;
-        quote_char = '\0';
+	// Closing the quote
+	in_quotes = false;
+	quote_char = '\0';
       } else if (!in_quotes) {
-        // Opening a quote
-        in_quotes = true;
-        quote_char = c;
+	// Opening a quote
+	in_quotes = true;
+	quote_char = c;
       } else {
-        // Inside quotes, just add the character to the token
-        token += c;
+	// Inside quotes, just add the character to the token
+	token += c;
       }
     } else if (isspace(c)) {
       if (in_quotes) {
-        // Inside quotes, just add the character to the token
-        token += c;
+	// Inside quotes, just add the character to the token
+	token += c;
       } else {
-        if (!token.empty()) {
-          tokens.push_back(token);
-          token.clear();
-        }
+	if (!token.empty()) {
+	  tokens.push_back(token);
+	  token.clear();
+	}
       }
     } else {
       // Regular character, add to token
@@ -51,7 +51,7 @@ std::vector<std::string> shlex(std::string s) {
 }
 
 std::string replaceall(const std::string &str, const std::string &from,
-                       const std::string &to) {
+		       const std::string &to) {
   if (from.empty())
     return str; // Avoid empty substring case
 

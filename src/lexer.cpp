@@ -84,7 +84,7 @@ std::vector<Token> Lexer::tokenize(std::string code) {
     } else if (word == "end") {
       tokens.push_back({"STend", word});
     } else if (std::regex_match(word, std::regex("[a-z]")) ||
-               std::regex_match(word, std::regex("[A-Z]"))) {
+	       std::regex_match(word, std::regex("[A-Z]"))) {
       tokens.push_back({"Identifier", word});
     } else if (word == ";") {
       tokens.push_back({"End", word});
@@ -104,11 +104,11 @@ std::vector<Token> Lexer::tokenize(std::string code) {
       tokens.push_back({"LessEq", word});
     } else {
       if (std::regex_match(word, std::regex("[+-]?([0-9]*[.])?[0-9]+"))) {
-        tokens.push_back({"TFloat", word});
+	tokens.push_back({"TFloat", word});
       } else if (std::regex_match(word, std::regex("[0-9]"))) {
-        tokens.push_back({"TInt", word});
+	tokens.push_back({"TInt", word});
       } else {
-        tokens.push_back({"Indentifier", word});
+	tokens.push_back({"Indentifier", word});
       }
     }
   }

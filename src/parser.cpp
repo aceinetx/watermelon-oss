@@ -11,7 +11,8 @@ Parser::Parser() {
   toexit = false;
 };
 
-Parser::~Parser() {}
+Parser::~Parser() {
+}
 
 void Parser::run(std::vector<Token> _tokens) {
   long c = 0;
@@ -25,7 +26,7 @@ void Parser::run(std::vector<Token> _tokens) {
     std::map<std::string, Variable> variables = scopes[current_scope].variables;
     if (current_scope != "global") {
       for (auto const &[key, value] : scopes["global"].variables) {
-        variables[key] = value;
+	variables[key] = value;
       }
     }
     for (auto const &[key, value] : scopes["essential"].variables) {
@@ -42,12 +43,12 @@ void Parser::run(std::vector<Token> _tokens) {
 
     if (tokens[c].name == "KEndLoop") {
       if (skip_until_loop_end) {
-        c++;
-        continue;
+	c++;
+	continue;
       }
     } else {
       if (skip_until_loop_end) {
-        skip_until_loop_end = false;
+	skip_until_loop_end = false;
       }
     }
 
@@ -58,11 +59,13 @@ void Parser::run(std::vector<Token> _tokens) {
       end = false;
     } else if (tokens[c].name == "STend") {
       if (ifst.size() > 0) {
-        ifst.pop_back(); // NOTE: I'm not sure that this will do the same effect
-                         // as in python
+	ifst.pop_back(); // NOTE: I'm not sure that this will do the same effect
+			 // as in python
       }
     } else if (tokens[c].name == "STelse") {
-      // TODO
+      if (ifst.size() > 0) {
+	ifst.back().elsecon = true;
+      }
     }
 
     if (tokens[c].name == "KIndentEnd")
@@ -80,85 +83,85 @@ void Parser::run(std::vector<Token> _tokens) {
     if (ifst.size() > 0) {
       IfSt &st = ifst.back();
       if (st.active) {
-        if (st.elsecon) {
-          switch (st.condition) {
-          case Eq:
-            if (variables[st.var].d == variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case NEq:
-            if (variables[st.var].d != variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case More:
-            if (variables[st.var].d < variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case Less:
-            if (variables[st.var].d > variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case MoreEq:
-            if (variables[st.var].d >= variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case LessEq:
-            if (variables[st.var].d <= variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          }
-        } else {
-          switch (st.condition) {
-          case Eq:
-            if (variables[st.var].d != variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case NEq:
-            if (variables[st.var].d == variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case More:
-            if (variables[st.var].d < variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case Less:
-            if (variables[st.var].d > variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case MoreEq:
-            if (variables[st.var].d <= variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          case LessEq:
-            if (variables[st.var].d >= variables[st.equal].d) {
-              c++;
-              continue;
-            }
-            break;
-          }
-        }
+	if (st.elsecon) {
+	  switch (st.condition) {
+	  case Eq:
+	    if (variables[st.var].d == variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case NEq:
+	    if (variables[st.var].d != variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case More:
+	    if (variables[st.var].d < variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case Less:
+	    if (variables[st.var].d > variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case MoreEq:
+	    if (variables[st.var].d >= variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case LessEq:
+	    if (variables[st.var].d <= variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  }
+	} else {
+	  switch (st.condition) {
+	  case Eq:
+	    if (variables[st.var].d != variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case NEq:
+	    if (variables[st.var].d == variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case More:
+	    if (variables[st.var].d < variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case Less:
+	    if (variables[st.var].d > variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case MoreEq:
+	    if (variables[st.var].d <= variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  case LessEq:
+	    if (variables[st.var].d >= variables[st.equal].d) {
+	      c++;
+	      continue;
+	    }
+	    break;
+	  }
+	}
       }
     }
     c++;

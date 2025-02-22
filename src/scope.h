@@ -2,14 +2,14 @@
 #include <map>
 #include <string>
 
+typedef enum VarTypes {
+  VarNum,
+  VarStr,
+};
+
 typedef struct Variable {
-  union {
-    double d;
-    std::string *s;
-  };
-  bool isString();
-  Variable(double d = 0, std::string s = "");
-  ~Variable();
+  double d;
+  std::string s;
 } Variable;
 
 typedef struct {
